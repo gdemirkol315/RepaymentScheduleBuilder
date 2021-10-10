@@ -30,6 +30,7 @@ function addPaymentIntoTable(payments) {
         var accumulatingDays = row.insertCell(4);
         var remaningPrincipal = row.insertCell(5);
         var interestAmount = row.insertCell(6);
+        row.id="payment-" + payments[i].id
         id.innerHTML = payments[i].id;
         previousPaymentDate.innerHTML = convertDateToString(payments[i].previousPaymentDate);
         paymentDate.innerHTML = convertDateToString(payments[i].paymentDate);
