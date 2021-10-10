@@ -47,8 +47,8 @@
         <input id="maturity" class="form-control" type="date">
         <br />
     </div>
-    <button class="btn btn-primary" onclick="execute()">Calculate</button>
-    <button class="btn btn-danger" onclick="location.reload()">Reset</button>
+    <button id="calculate" class="btn btn-primary" onclick="execute()">Calculate</button>
+    <button id="reset" class="btn btn-danger" onclick="location.reload()">Reset</button>
 
     <table id="result" class="table table-dark">
         <tr>
@@ -65,7 +65,7 @@
 
     </table>
     <iframe id="txtArea1" style="display:none"></iframe>
-    <button class="btn btn-primary" id="btnExport" onclick="excelReport();">Export .xlsx</button>
+    <button id="btnExport" class="btn btn-primary" onclick="excelReport();">Export .xlsx</button>
     <script src="js/main.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
