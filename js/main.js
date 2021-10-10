@@ -1,11 +1,13 @@
 
 function execute() {
-     loanAmount = document.getElementById("loanAmount").value
-     interestRate = document.getElementById("interestRate").value
-     frequency = getElementInsideContainer("frequencyDropdownGr","frequency").value;
-     var paymentStart = new Date($("#paymentStart").val());
-     var maturity = new Date($("#maturity").val());
-    calculate(1500, 0.01, 'M', '2021-09-30', '2021-12-31', '2021-09-30');
+    var loanAmount = document.getElementById("loanAmount").value
+    var interestRate = document.getElementById("interestRate").value
+    var frequency = getElementInsideContainer("frequencyDropdownGr", "frequency").value;
+    var paymentStart = new Date($("#paymentStart").val());
+    var utilization = new Date($("#utilization").val());
+    var maturity = new Date($("#maturity").val());
+    var payments = calculate(loanAmount, interestRate, frequency, utilization, maturity, paymentStart);
+    addPaymentIntoTable(payments);
 }
 
 
@@ -13,6 +15,30 @@ function getElementInsideContainer(containerID, childID) {
     var elm = document.getElementById(childID);
     var parent = elm ? elm.parentNode : {};
     return (parent.id && parent.id === containerID) ? elm : {};
+}
+
+function addPaymentIntoTable(payments) {
+    var table = document.getElementById("result");
+
+
+    for (let i = 0; i < payments.length; i++) {
+        var row = table.insertRow(i + 1);
+        var id = row.insertCell(0);
+        var previousPaymentDate = row.insertCell(1);
+        var paymentDate = row.insertCell(2);
+        var principalPayment = row.insertCell(3);
+        var accumulatingDays = row.insertCell(4);
+        var remaningPrincipal = row.insertCell(5);
+        var interestAmount = row.insertCell(6);
+        id.innerHTML = payments[i].id;
+        previousPaymentDate.innerHTML = convertDateToString(payments[i].previousPaymentDate);
+        paymentDate.innerHTML = convertDateToString(payments[i].paymentDate);
+        principalPayment.innerHTML = Math.round(payments[i].principalPayment);
+        accumulatingDays.innerHTML = getDifferenceInDays(payments[i].paymentDate, payments[i].previousPaymentDate);
+        remaningPrincipal.innerHTML = Math.round(payments[i].remainingPrincipal);
+        interestAmount.innerHTML = Math.round(payments[i].interestAmount);
+
+    }
 }
 
 
@@ -67,9 +93,6 @@ function isValidDate(dateString) {
 
 function calculate(loanAmount, interestRate, frequency, utilizationDate, maturityDate, paymentStart) {
     var frequency = frequency.toUpperCase();
-    var maturityDate = new Date(maturityDate);
-    var utilizationDate = new Date(utilizationDate);
-    var paymentStart = new Date(paymentStart);
     var durationDays = getDifferenceInDays(maturityDate, paymentStart);
     var nInstallments = Math.ceil(durationDays / getPeriodicityDays(frequency));
     var installmentAmount = loanAmount / nInstallments;
@@ -90,19 +113,6 @@ function calculate(loanAmount, interestRate, frequency, utilizationDate, maturit
         remainingPrincipal = remainingPrincipal - installmentAmount;
         previousPaymentDate = paymentDate;
         paymentDate = getNextPaymentDate(paymentDate, frequency);
-    }
-
-
-    for (let i = 0; i < payments.length; i++) {
-        console.log(
-            "\npaymentNumber[" + payments[i].id + "]:\n{" +
-            "\n previous payment date: " + convertDateToString(payments[i].paymentDate) +
-            "\n payment date: " + convertDateToString(payments[i].paymentDate) +
-            "\n principalPayment: " + Math.round(payments[i].principalPayment) +
-            "\n accumulating days: " +
-            getDifferenceInDays(payments[i].paymentDate, payments[i].previousPaymentDate) +
-            "\n remainingPrincipal: " + Math.round(payments[i].remainingPrincipal) +
-            "\n interestAmount: " + Math.round(payments[i].interestAmount) + "\n}");
     }
 
     return payments;
@@ -178,19 +188,31 @@ function convertDateToString(date) {
     return dd + '.' + mm + '.' + yyyy;
 }
 
-function printCsvFormat(payments) {
-    console.log('id,previous_payment_date,payment_date,days,remaining_principal,principal_payment,interest_rate,interest_amount')
-    for (let i = 0; i < payments.length; i++) {
-        console.log(
-            payments[i].id + ',' +
-            convertDateToString(payments[i].previousPaymentDate) + ',' +
-            convertDateToString(payments[i].paymentDate) + ',' +
-            getDifferenceInDays(payments[i].paymentDate, payments[i].previousPaymentDate) + ',' +
-            Math.round(payments[i].remainingPrincipal) + ',' +
-            Math.round(payments[i].principalPayment) + ',' +
-            Math.round(payments[i].interestRate) + ',' +
-            Math.round(payments[i].interestAmount));
+function excelReport() {
+    var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+    var textRange; var j = 0;
+    tab = document.getElementById('result'); // id of table
+
+    for (j = 0; j < tab.rows.length; j++) {
+        tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+        //tab_text=tab_text+"</tr>";
     }
 
+    tab_text = tab_text + "</table>";
 
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html", "replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus();
+        sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+    }
+    else                 //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+    return (sa);
 }
