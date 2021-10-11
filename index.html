@@ -3,54 +3,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <meta charset="utf-8" />
-    
-    <title>Repayment Plan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <meta charset="utf-8"/>
+
+    <title>RPSB</title>
 </head>
 
 <body class="text-light bg-dark">
-    <h1>Please enter loan details</h1>
-    <br />
-    <br />
-    <div id="entries" class="col-md-2">
-        <label for="loanAmount">Loan Amount</label>
-        <br />
-        <input id="loanAmount" class="form-control" type="text" placeholder="Loan Amount" />
-        <br />
-        <label for="interestRate">Interest Rate</label><br />
-        <input id="interestRate" class="form-control" type="text" placeholder="Interest Rate" />
-        <br />
-        <div id="frequencyDropdownGr" class="input-group mb-12">
-            <div class="input-group-prepend">
-                <label for="frequency">Payment Frequency</label>
-            </div>
-            <select id="frequency" class="custom-select">
-                <option selected>Please select from dropdown</option>
-                <option value="M">Monthly</option>
-                <option value="Q">Quarterly</option>
-                <option value="H">Semi-anually</option>
-                <option value="J">Anually</option>
-            </select>
+<h1>Repayment Schedule Builder</h1>
+<br/>
+<br/>
+<h3>Please enter loan details</h3>
+<br/>
+<div id="entries" class="col-md-2">
+    <label for="loanAmount">Loan Amount</label>
+    <br/>
+    <input id="loanAmount" class="form-control" type="text" placeholder="Loan Amount"/>
+    <br/>
+    <label for="interestRate">Interest Rate</label><br/>
+    <input id="interestRate" class="form-control" type="text" placeholder="Interest Rate"/>
+    <br/>
+    <div id="frequencyDropdownGr" class="input-group mb-12">
+        <div class="input-group-prepend">
+            <label for="frequency">Payment Frequency</label>
         </div>
-        <br />
-        <label for="utilization">Utilization</label>
-        <br />
-        <input id="utilization" class="form-control" type="date" />
-        <br />
-        <label for="paymentStart">Payment Start</label>
-        <br />
-        <input id="paymentStart" class="form-control" type="date" />
-        <br />
-        <label for="maturity">Maturity</label>
-        <br />
-        <input id="maturity" class="form-control" type="date">
-        <br />
+        <select id="frequency" class="custom-select">
+            <option selected>Please select from dropdown</option>
+            <option value="M">Monthly</option>
+            <option value="Q">Quarterly</option>
+            <option value="H">Semi-anually</option>
+            <option value="J">Anually</option>
+        </select>
     </div>
-    <button id="calculate" class="btn btn-primary" onclick="execute()">Calculate</button>
-    <button id="reset" class="btn btn-danger" onclick="location.reload()">Reset</button>
-
-    <table id="result" class="table table-dark">
+    <br/>
+    <label for="utilization">Utilization</label>
+    <br/>
+    <input id="utilization" class="form-control" type="date"/>
+    <br/>
+    <label for="paymentStart">Payment Start</label>
+    <br/>
+    <input id="paymentStart" class="form-control" type="date"/>
+    <br/>
+    <label for="maturity">Maturity</label>
+    <br/>
+    <input id="maturity" class="form-control" type="date">
+    <br/>
+</div>
+<button id="calculate" class="btn btn-primary" onclick="execute()">Calculate</button>
+<button id="reset" class="btn btn-danger" onclick="location.reload()">Reset</button>
+<div id="result" class="invisible">
+    <table id="resultTable" class="table table-dark">
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Previous Payment Date</th>
@@ -59,17 +62,21 @@
             <th scope="col">Interest Accumulation Days</th>
             <th scope="col">Remaning Principal</th>
             <th scope="col">Interest Amount</th>
-
         </tr>
-
 
     </table>
     <iframe id="txtArea1" style="display:none"></iframe>
     <button id="btnExport" class="btn btn-primary" onclick="excelReport();">Export .xlsx</button>
-    <script src="js/main.js"></script>
+</div>
+<ul class="list-style-none d-flex flex-wrap col-12 col-lg-5 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
+    <li class="mr-3 mr-lg-0">© 2021, Goerkem Demirkol. All rights are reserved</li>
+</ul>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
