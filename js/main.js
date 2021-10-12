@@ -30,14 +30,22 @@ function addPaymentIntoTable(payments) {
         var accumulatingDays = row.insertCell(4);
         var remaningPrincipal = row.insertCell(5);
         var interestAmount = row.insertCell(6);
-        row.id="payment-" + payments[i].id
+        row.id = "payment-" + payments[i].id;
+        row.className = "payment";
         id.innerHTML = payments[i].id;
+        id.className = "paymentId";
         previousPaymentDate.innerHTML = convertDateToString(payments[i].previousPaymentDate);
+        previousPaymentDate.className = "previousPaymentDate";
         paymentDate.innerHTML = convertDateToString(payments[i].paymentDate);
+        paymentDate.className = "paymentDate";
         principalPayment.innerHTML = Math.round(payments[i].principalPayment);
+        principalPayment.className = "principalPayment";
         accumulatingDays.innerHTML = getDifferenceInDays(payments[i].paymentDate, payments[i].previousPaymentDate);
+        accumulatingDays.className = "accumulatingDays";
         remaningPrincipal.innerHTML = Math.round(payments[i].remainingPrincipal);
+        remaningPrincipal.className = "remaningPrincipal";
         interestAmount.innerHTML = Math.round(payments[i].interestAmount);
+        interestAmount.className = "interestAmount";
 
     }
 }
