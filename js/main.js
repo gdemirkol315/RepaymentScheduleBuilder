@@ -18,8 +18,7 @@ function getElementInsideContainer(containerID, childID) {
 }
 
 function addPaymentIntoTable(payments) {
-    var table = document.getElementById("result");
-
+    var table = document.getElementById("resultTable");
 
     for (let i = 0; i < payments.length; i++) {
         var row = table.insertRow(i + 1);
@@ -48,6 +47,8 @@ function addPaymentIntoTable(payments) {
         interestAmount.className = "interestAmount";
 
     }
+    var result = document.getElementById("result");
+    result.className="visible";
 }
 
 
@@ -200,7 +201,7 @@ function convertDateToString(date) {
 function excelReport() {
     var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
     var textRange; var j = 0;
-    tab = document.getElementById('result'); // id of table
+    tab = document.getElementById('resultTable'); // id of table
 
     for (j = 0; j < tab.rows.length; j++) {
         tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
