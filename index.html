@@ -5,78 +5,34 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
 
     <title>RPSB</title>
 </head>
-
 <body class="text-light bg-dark">
-<h1>Repayment Schedule Builder</h1>
-<br/>
-<br/>
-<h3>Please enter loan details</h3>
-<br/>
-<div id="entries" class="col-md-2">
-    <label for="loanAmount">Loan Amount</label>
-    <br/>
-    <input id="loanAmount" class="form-control" type="text" placeholder="Loan Amount"/>
-    <br/>
-    <label for="interestRate">Interest Rate</label><br/>
-    <input id="interestRate" class="form-control" type="text" placeholder="Interest Rate"/>
-    <br/>
-    <div id="frequencyDropdownGr" class="input-group mb-12">
-        <div class="input-group-prepend">
-            <label for="frequency">Payment Frequency</label>
+
+    <h1>Credit Department Tools</h1><br />
+    <h3>Please choose a product</h3><br />
+    <a href="./rpsb.html" class="btn btn-primary" role="button"> Repayment Schedule Builder</a><br /><br />
+    <a href="./npv.html" class="btn btn-primary" role="button"> NPV (Net Present Value) Calculator</a><br /><br />
+    <!--
+    <a href="./rpsb.html" class="btn btn-primary" role="button"> Net Present Value Calculator</a>
+    -->
+
+
+
+    <footer class="page-footer font-small blue pt-4">
+        <div class="footer-copyright text-center py-3">
+            Copyrighted by Goerkem Demirkol, 2021 All rights are reserved
         </div>
-        <select id="frequency" class="custom-select">
-            <option selected>Please select from dropdown</option>
-            <option value="M">Monthly</option>
-            <option value="Q">Quarterly</option>
-            <option value="H">Semi-anually</option>
-            <option value="J">Anually</option>
-        </select>
-    </div>
-    <br/>
-    <label for="utilization">Utilization</label>
-    <br/>
-    <input id="utilization" class="form-control" type="date"/>
-    <br/>
-    <label for="paymentStart">Payment Start</label>
-    <br/>
-    <input id="paymentStart" class="form-control" type="date"/>
-    <br/>
-    <label for="maturity">Maturity</label>
-    <br/>
-    <input id="maturity" class="form-control" type="date">
-    <br/>
-</div>
-<button id="calculate" class="btn btn-primary" onclick="execute()">Calculate</button>
-<button id="reset" class="btn btn-danger" onclick="location.reload()">Reset</button>
-<div id="result" class="invisible">
-    <table id="resultTable" class="table table-dark">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Previous Payment Date</th>
-            <th scope="col">Payment Date</th>
-            <th scope="col">Principal Amount</th>
-            <th scope="col">Interest Accumulation Days</th>
-            <th scope="col">Remaning Principal</th>
-            <th scope="col">Interest Amount</th>
-        </tr>
+    </footer>
 
-    </table>
-    <iframe id="txtArea1" style="display:none"></iframe>
-    <button id="btnExport" class="btn btn-primary" onclick="excelReport();">Export .xlsx</button>
-</div>
-<ul class="list-style-none d-flex flex-wrap col-12 col-lg-5 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
-    <li class="mr-3 mr-lg-0">© 2021, Goerkem Demirkol. All rights are reserved</li>
-</ul>
 
-<script src="js/main.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-        crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>
