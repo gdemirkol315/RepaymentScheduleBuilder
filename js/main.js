@@ -1,3 +1,50 @@
+if (document.readyState == 'loading') {
+    document.addEventListener('DOMContentLoaded', addListeners);
+} else {
+    addListeners();
+}
+
+function addListeners() {
+    var loanAmount = document.getElementById("loanAmount");
+    loanAmount.addEventListener('change', amountCheck);
+    var interestRate = document.getElementById("interestRate");
+    interestRate.addEventListener('change', amountCheck);
+    //var paymentStart = document.getElementById("paymentStart");
+    //paymentStart.addEventListener('change', checkDates);
+    //var utilization = document.getElementById("utilization");
+    //utilization.addEventListener('change', checkDates);
+    //var maturity = document.getElementById("maturity");
+    //maturity.addEventListener('change', checkDates);
+}
+
+function amountCheck() {
+
+}
+
+//function checkDates() {
+
+//    var paymentStart = new Date($("#paymentStart").val());
+//    var utilization = new Date($("#utilization").val());
+//    var maturity = new Date($("#maturity").val());
+
+//    if (paymentStart < utilization || maturity <= utilization || maturity < paymentStart) {
+//        addAlertMessage("Please enter a valid date. Validation rule should be fulfilled Utilization <= Payment Start < Maturity ");
+//        return false;
+//    }
+//    return true;
+//}
+
+function addAlertMessage(alertMessage) {
+    var entries = document.getElementById("entries");
+    var warningMessage = document.createElement("div");
+    warningMessage.className = "alert alert-danger";
+    warningMessage.innerHTML = alertMessage;
+    insertAfter(warningMessage, entries);
+}
+
+function insertAfter(newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+}
 
 function execute() {
     var loanAmount = document.getElementById("loanAmount").value
@@ -6,7 +53,7 @@ function execute() {
     var paymentStart = new Date($("#paymentStart").val());
     var utilization = new Date($("#utilization").val());
     var maturity = new Date($("#maturity").val());
-    var paymentSchedule = calculate(loanAmount, interestRate, frequency, utilization, maturity, paymentStart);
+    var paymentSchedule = calculatePaymentSchedule(loanAmount, interestRate, frequency, utilization, maturity, paymentStart);
     if (tableAlreadyFull()) {
         emptyTable();
     }
@@ -27,56 +74,9 @@ function getElementInsideContainer(containerID, childID) {
     return (parent.id && parent.id === containerID) ? elm : {};
 }
 
-function isValidPaymentStartDate(paymentStart, utilization) {
-    if (isValidDate(paymentStart)) {
-        var paymentStart = new Date(paymentStart);
-        var utilization = new Date(utilization);
-        if (paymentStart > utilization) {
-            return false;
-            console.log('Payment start date can not be earlier than utilization date!')
-        } else {
-            return true;
-        }
-    }
-    return false;
-}
 
-function isValidMaturityDate(maturity, utilization, paymentStart) {
-    if (isValidDate(maturity)) {
-        var maturity = new Date(maturity);
-        var paymentStart = new Date(paymentStart);
-        var utilization = new Date(utilization);
-        if ((maturity < utilization) || (maturity < paymentStart)) {
-            return false;
-            console.log('Maturity date can not be earlier than utilization date or payment start date!')
-        } else {
-            return true;
-        }
-    }
-    return false;
-}
 
-function isValidDate(dateString) {
-    var regEx = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateString.match(regEx)) {
-        console.log('Invalid date format!')
-        return false;
-    }
-    var d = new Date(dateString);
-    var dNum = d.getTime();
-    if (!dNum && dNum !== 0) {
-        console.log('Invalid date format!')
-        return false;
-    }
-    if (d.toISOString().slice(0, 10) === dateString) {
-        return true;
-    } else {
-        console.log('Invalid date format!')
-        return false;
-    }
-}
-
-function calculate(loanAmount, interestRate, frequency, utilizationDate, maturityDate, paymentStart) {
+function calculatePaymentSchedule(loanAmount, interestRate, frequency, utilizationDate, maturityDate, paymentStart) {
     var frequency = frequency.toUpperCase();
     var durationDays = getDifferenceInDays(maturityDate, paymentStart);
     var nInstallments = Math.ceil(durationDays / getPeriodicityDays(frequency));
