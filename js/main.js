@@ -9,63 +9,106 @@ function addListeners() {
     loanAmount.addEventListener('change', amountCheck);
     var interestRate = document.getElementById("interestRate");
     interestRate.addEventListener('change', amountCheck);
-    //var paymentStart = document.getElementById("paymentStart");
-    //paymentStart.addEventListener('change', checkDates);
-    //var utilization = document.getElementById("utilization");
-    //utilization.addEventListener('change', checkDates);
-    //var maturity = document.getElementById("maturity");
-    //maturity.addEventListener('change', checkDates);
+
+    var paymentStart =document.getElementById('paymentStart');
+    paymentStart.addEventListener('change', checkDates);
+    var utilization = document.getElementById('utilization');
+    utilization.addEventListener('change', checkDates);
+    var maturity = document.getElementById('maturity');
+    maturity.addEventListener('change', checkDates);
 }
 
-function amountCheck() {
-
+function amountCheck(event) {
+    var loanAmount = event.target;
+    if (isNaN(loanAmount.value) || loanAmount.value < 0) {
+        loanAmount.value = 0;
+        addAlertMessage("Number entered is not valid!", loanAmount)
+    } else {
+        deleteExistingAlert(loanAmount);
+    }
 }
 
-//function checkDates() {
+function checkDates(event) {
+    var checkElement = event.target;
+    var paymentStart = new Date($("#paymentStart").val());
+    var utilization = new Date($("#utilization").val());
+    var maturity = new Date($("#maturity").val());
 
-//    var paymentStart = new Date($("#paymentStart").val());
-//    var utilization = new Date($("#utilization").val());
-//    var maturity = new Date($("#maturity").val());
+    if (paymentStart < utilization || maturity <= utilization || maturity < paymentStart) {
+        addAlertMessage("Please enter a valid date. Validation rule should be fulfilled Utilization <= Payment Start < Maturity ", checkElement);
+    } else {
+        deleteExistingAlert(checkElement);
+    }
+}
 
-//    if (paymentStart < utilization || maturity <= utilization || maturity < paymentStart) {
-//        addAlertMessage("Please enter a valid date. Validation rule should be fulfilled Utilization <= Payment Start < Maturity ");
-//        return false;
-//    }
-//    return true;
-//}
-
-function addAlertMessage(alertMessage) {
-    var entries = document.getElementById("entries");
+function addAlertMessage(alertMessage, underThisElement, optinalWarningId) {
     var warningMessage = document.createElement("div");
     warningMessage.className = "alert alert-danger";
     warningMessage.innerHTML = alertMessage;
-    insertAfter(warningMessage, entries);
+    if (typeof (optinalWarningId) != 'undefined') {
+        warningMessage.id = optinalWarningId;
+    }
+    insertAfter(warningMessage, underThisElement);
 }
 
 function insertAfter(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
 
-function execute() {
-    var loanAmount = document.getElementById("loanAmount").value
-    var interestRate = document.getElementById("interestRate").value
-    var frequency = getElementInsideContainer("frequencyDropdownGr", "frequency").value;
-    var paymentStart = new Date($("#paymentStart").val());
-    var utilization = new Date($("#utilization").val());
-    var maturity = new Date($("#maturity").val());
-    var paymentSchedule = calculatePaymentSchedule(loanAmount, interestRate, frequency, utilization, maturity, paymentStart);
-    if (tableAlreadyFull()) {
-        emptyTable();
+function deleteExistingAlert(afterThisElement) {
+    if (afterThisElement.nextSibling.className == "alert alert-danger") {
+        afterThisElement.nextSibling.remove();
     }
 
-    var result = document.getElementById("result");
-    result.className = "visible";
-    fillRepaymentTable(paymentSchedule);
-    var eir = xirr(paymentSchedule) * 100;
-    var npvs= paymentsNpv(paymentSchedule,eir);
-    setNpvResult(paymentSchedule, npvs, eir);
+}
 
-    
+function execute() {
+    try {
+        if (globalWarningExists()) {
+            throw ("Warnings exists can not execute!");
+        }
+        var loanAmount = document.getElementById("loanAmount").value
+        var interestRate = document.getElementById("interestRate").value
+        var frequency = getElementInsideContainer("frequencyDropdownGr", "frequency").value;
+        var paymentStart = new Date($("#paymentStart").val());
+        var utilization = new Date($("#utilization").val());
+        var maturity = new Date($("#maturity").val());
+        var paymentSchedule = calculatePaymentSchedule(loanAmount, interestRate, frequency, utilization, maturity, paymentStart);
+        if (tableAlreadyFull()) {
+            emptyTable();
+        }
+
+        var result = document.getElementById("result");
+        result.className = "visible";
+        fillRepaymentTable(paymentSchedule);
+        var eir = xirr(paymentSchedule) * 100;
+        var npvs = paymentsNpv(paymentSchedule, eir);
+        setNpvResult(paymentSchedule, npvs, eir);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function globalWarningExists() {
+    var globalWarning = document.getElementById("global-warning");
+    if (warningsElementExists() && globalWarning == null) {
+        addAlertMessage("Wrong entries exist. Please correct before execution.",
+            document.getElementById("entries"), "global-warning");
+        return true;
+    } else if (warningsElementExists() && globalWarning != null) {
+        return true;
+    }
+    else {
+        if (globalWarning != null) {
+            globalWarning.remove();
+        }
+        return false;
+    }
+}
+
+function warningsElementExists() {
+    var entries = document.getElementById("entries");
+    return entries.getElementsByClassName("alert alert-danger").length > 0;
 }
 
 function getElementInsideContainer(containerID, childID) {
