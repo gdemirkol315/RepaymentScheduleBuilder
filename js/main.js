@@ -19,10 +19,10 @@ function addListeners() {
 }
 
 function amountCheck(event) {
-    var loanAmount = event.target;
-    if (isNaN(loanAmount.value) || loanAmount.value < 0) {
-        loanAmount.value = 0;
-        addAlertMessage("Number entered is not valid!", loanAmount)
+    var amount = event.target;
+    if (isNaN(amount.value) || amount.value < 0) {
+        amount.value = 0;
+        addAlertMessage("Number entered is not valid!", amount, "warning-"+amount.id)
     } else {
         deleteExistingAlert(loanAmount);
     }
@@ -35,7 +35,7 @@ function checkDates(event) {
     var maturity = new Date($("#maturity").val());
 
     if (paymentStart < utilization || maturity <= utilization || maturity < paymentStart) {
-        addAlertMessage("Please enter a valid date. Validation rule should be fulfilled Utilization <= Payment Start < Maturity ", checkElement);
+        addAlertMessage("Please enter a valid date. Validation rule should be fulfilled Utilization <= Payment Start < Maturity ", checkElement,"warning-"+checkElement.id);
     } else {
         deleteExistingAlert(checkElement);
     }
