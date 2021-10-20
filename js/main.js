@@ -24,7 +24,7 @@ function amountCheck(event) {
         amount.value = 0;
         addAlertMessage("Number entered is not valid!", amount, "warning-"+amount.id)
     } else {
-        deleteExistingAlert(loanAmount);
+        deleteExistingAlert(amount);
     }
 }
 
@@ -41,14 +41,15 @@ function checkDates(event) {
     }
 }
 
-function addAlertMessage(alertMessage, underThisElement, optinalWarningId) {
-    var warningMessage = document.createElement("div");
-    warningMessage.className = "alert alert-danger";
-    warningMessage.innerHTML = alertMessage;
-    if (typeof (optinalWarningId) != 'undefined') {
-        warningMessage.id = optinalWarningId;
+function addAlertMessage(alertMessage, underThisElement, warningId) {
+    var warningMessage = document.getElementById(warningId);
+    if(warningMessage == null){
+      warningMessage = document.createElement("div");
+      warningMessage.className = "alert alert-danger";
+      warningMessage.innerHTML = alertMessage;
+          warningMessage.id = warningId;
+      insertAfter(warningMessage, underThisElement);
     }
-    insertAfter(warningMessage, underThisElement);
 }
 
 function insertAfter(newNode, existingNode) {
