@@ -65,7 +65,7 @@ function deleteExistingAlert(afterThisElement) {
 
 function execute() {
     try {
-        if (globalWarningExists()) {
+        if (globalWarningExists() || !allFieldsEntered()) {
             throw ("Warnings exists can not execute!");
         }
         var loanAmount = document.getElementById("loanAmount").value
@@ -89,7 +89,26 @@ function execute() {
         console.error(e);
     }
 }
-
+function allFieldsEntered(){
+    var loanAmount = document.getElementById("loanAmount").value
+    var interestRate = document.getElementById("interestRate").value
+    var frequency = getElementInsideContainer("frequencyDropdownGr", "frequency").value;
+    var paymentStart = $("#paymentStart").val();
+    var utilization = $("#utilization").val();
+    var maturity = $("#maturity").val();
+    if (loanAmount == "" ||
+        interestRate =="" ||
+        frequency == "Please select from dropdown" ||
+        utilization == '' ||
+        paymentStart == '' ||
+        maturity == ''
+    ){
+        var entriesDiv = document.getElementById('entries')
+        addAlertMessage('Please fill all the fields!', entriesDiv,'global-warning')
+        return false
+    }
+    return true
+}
 function globalWarningExists() {
     var globalWarning = document.getElementById("global-warning");
     if (warningsElementExists() && globalWarning == null) {
